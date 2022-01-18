@@ -17,6 +17,7 @@ end
 
 def convert_links(doc)
   open_external_links_in_new_tab = !!doc.site.config["open_external_links_in_new_tab"]
+  baseurl = !!doc.site.config["baseurl"]
 
   if open_external_links_in_new_tab
     parsed_doc = Nokogiri::HTML(doc.content)
@@ -30,13 +31,13 @@ def convert_links(doc)
     parsed_doc.css("img").each do |img|
       imgsrc = img.attributes["src"]
       if imgsrc.value.start_with?( '/assets/')
-        imgsrc.value = '{{ site.baseurl }}' + imgsrc.value
+        imgsrc.value = baseurl + imgsrc.value
       end
     end
     parsed_doc.css("a").each do |link|
       linkhref = link.attributes["href"]
       if linkhref.value.start_with?( '/assets/')
-        linkhref.value = '{{ site.baseurl }}' + linkhref.value
+        linkhref.value = baseurl + linkhref.value
       end
     end
     doc.content = parsed_doc.to_html
