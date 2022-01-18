@@ -24,7 +24,7 @@ def convert_links(doc)
       link.set_attribute('target', 'blank')
     end
     # hack to rewrite images and files in asset folder to 
-    doc.xpath("//img").each do |img|
+    doc.css("img").each do |img|
       imgsrc = img.attributes["src"]
       if imgsrc.start_with?( '/assets/')
         imgsrc.value = '{{ site.baseurl }}' + imgsrc.value
