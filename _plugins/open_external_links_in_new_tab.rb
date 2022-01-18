@@ -23,6 +23,19 @@ def convert_links(doc)
     parsed_doc.css("a:not(.internal-link):not(.footnote):not(.reversefootnote)").each do |link|
       link.set_attribute('target', 'blank')
     end
+    # hack to rewrite images and files in asset folder to 
+    doc.xpath("//img").each do |img|
+      imgsrc = img.attributes["src"]
+      if imgsrc.start_with?( '/assets/')
+        imgsrc.value = '{{ site.baseurl }}' + imgsrc.value
+      end
+    end
+    doc.css("a").each do |link|
+      linkhref = link.attributes["href"]
+      if linkhref.start_with?( '/assets/')
+        linkhref.value = '{{ site.baseurl }}' + linkhref.value
+      end
+    end
     doc.content = parsed_doc.to_html
   end
 end
