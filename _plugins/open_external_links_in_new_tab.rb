@@ -21,16 +21,19 @@ def convert_links(doc)
   if open_external_links_in_new_tab
     parsed_doc = Nokogiri::HTML(doc.content)
     parsed_doc.css("a:not(.internal-link):not(.footnote):not(.reversefootnote)").each do |link|
-      link.set_attribute('target', 'blank')
+      linkhref = link.attributes["href"]
+      if linkhref.start_with?( '/assets/')
+        link.set_attribute('target', 'blank')
+      end
     end
     # hack to rewrite images and files in asset folder to 
-    doc.css("img").each do |img|
+    parsed_doc.css("img").each do |img|
       imgsrc = img.attributes["src"]
       if imgsrc.start_with?( '/assets/')
         imgsrc.value = '{{ site.baseurl }}' + imgsrc.value
       end
     end
-    doc.css("a").each do |link|
+    parsed_doc.css("a").each do |link|
       linkhref = link.attributes["href"]
       if linkhref.start_with?( '/assets/')
         linkhref.value = '{{ site.baseurl }}' + linkhref.value
