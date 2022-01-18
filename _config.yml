@@ -19,6 +19,7 @@ permalink:           pretty
 relative_permalinks: false
 
 plugins:
+  - jekyll-relative-links
   - jekyll-last-modified-at
 
 sass:
