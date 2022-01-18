@@ -26,6 +26,10 @@ sass:
   sass_dir:          _sass
   style:            :compressed
 
+relative_links:
+  enabled:     true
+  collections: true
+
 collections:
   notes:
     output: true
